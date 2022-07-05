@@ -1,0 +1,22 @@
+{
+  "name": "dex",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/plamen5rov/eth-201-dex.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/plamen5rov/eth-201-dex/issues"
+  },
+  "homepage": "https://github.com/plamen5rov/eth-201-dex#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.0"
+  }
+}
