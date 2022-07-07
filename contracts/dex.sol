@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+pragma abicoder v2;
 
 import "./wallet.sol";
 
@@ -18,7 +19,7 @@ contract Dex is Wallet {
         uint256 price;
     }
 
-    mapping(bytes32 => mapping(uint256 => Order[])) orderBook;
+    mapping(bytes32 => mapping(uint256 => Order[])) public orderBook;
 
     function getOrderBook(bytes32 ticker, Side side)
         public
