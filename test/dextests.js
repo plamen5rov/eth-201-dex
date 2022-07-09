@@ -9,7 +9,7 @@ contract("Dex", accounts => {
     //The user must have ETH deposited such that deposited eth >= buy order value
     it("should throw an error if ETH balance is too low when creating BUY limit order", async () => {
         let dex = await Dex.deployed()
-        let link = await Link.deployed()
+        //let link = await Link.deployed()
         await truffleAssert.reverts(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )
@@ -41,9 +41,10 @@ contract("Dex", accounts => {
         await dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 1, 200)
 
         let orderbook = await dex.getOrderBook(web3.utils.fromUtf8("LINK"), 0);
+        assert(orderbook.length > 0);
         for (let i = 0; i < orderbook.length - 1; i++) {
-            const element = array[index];
-            assert(orderbook[i] >= orderbook[i + 1])
+
+            assert(orderbook[i].price >= orderbook[i + 1].price, "Not right order in BUY book")
         }
     })
     //The SELL order book should be ordered on price from lowest to highest starting at index 0
@@ -56,9 +57,10 @@ contract("Dex", accounts => {
         await dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 1, 200)
 
         let orderbook = await dex.getOrderBook(web3.utils.fromUtf8("LINK"), 1);
+        assert(orderbook.length > 0);
         for (let i = 0; i < orderbook.length - 1; i++) {
-            const element = array[index];
-            assert(orderbook[i] <= orderbook[i + 1])
+
+            assert(orderbook[i].price <= orderbook[i + 1].price, "Not right order in SELL book")
         }
     })
 })

@@ -2,7 +2,7 @@ const Dex = artifacts.require("Dex");
 const Link = artifacts.require("Link");
 const truffleAssert = require("truffle-assertions");
 
-contract("Dex", accounts => {
+contract.skip("Dex", accounts => {
 
     it("should be possible only to onwer to add tokens", async () => {
 
