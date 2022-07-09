@@ -51,6 +51,9 @@ contract Dex is Wallet {
             Order(nextOrderId, msg.sender, side, ticker, amount, price)
         );
 
+        //BUBBLE SORT
+        if (side == Side.BUY) {} else if (side == Side.SELL) {}
+
         nextOrderId++;
     }
 }
