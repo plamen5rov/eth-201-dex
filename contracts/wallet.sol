@@ -7,6 +7,7 @@ import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
 contract Wallet is Ownable {
     using SafeMath for uint256;
+
     struct Token {
         bytes32 ticker;
         address tokenAddress;
@@ -56,7 +57,8 @@ contract Wallet is Ownable {
         balances[msg.sender][bytes32("ETH")] = balances[msg.sender][
             bytes32("ETH")
         ].sub(amount);
-        msg.sender.call{value: amount}("");
+        (bool success, ) = msg.sender.call{value: amount}("");
+        require(success, "Call did not make through!");
     }
 
     modifier tokenExist(bytes32 ticker) {
