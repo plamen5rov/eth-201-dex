@@ -52,7 +52,30 @@ contract Dex is Wallet {
         );
 
         //BUBBLE SORT
-        if (side == Side.BUY) {} else if (side == Side.SELL) {}
+
+        uint256 i = orders.length > 0 ? orders.length - 1 : 0;
+
+        if (side == Side.BUY) {
+            while (i > 0) {
+                if (orders[i - 1].price > orders[i].price) {
+                    break;
+                }
+                Order memory orderToMove = orders[i - 1];
+                orders[i - 1] = orders[1];
+                orders[1] = orderToMove;
+                i--;
+            }
+        } else if (side == Side.SELL) {
+            while (i > 0) {
+                if (orders[i - 1].price < orders[i].price) {
+                    break;
+                }
+                Order memory orderToMove = orders[i - 1];
+                orders[i - 1] = orders[1];
+                orders[1] = orderToMove;
+                i--;
+            }
+        }
 
         nextOrderId++;
     }
