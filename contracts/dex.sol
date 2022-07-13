@@ -19,6 +19,7 @@ contract Dex is Wallet {
         bytes32 ticker;
         uint256 amount;
         uint256 price;
+        uint256 filled;
     }
 
     uint256 public nextOrderId = 0;
@@ -48,7 +49,7 @@ contract Dex is Wallet {
         Order[] storage orders = orderBook[ticker][uint256(side)];
 
         orders.push(
-            Order(nextOrderId, msg.sender, side, ticker, amount, price)
+            Order(nextOrderId, msg.sender, side, ticker, amount, price, 0)
         );
 
         //BUBBLE SORT
@@ -122,8 +123,38 @@ contract Dex is Wallet {
                 require(
                     balances[msg.sender]["ETH"] >= filled.mul(orders[i].price)
                 );
-            } else {}
+                balances[msg.sender][ticker] = balances[msg.sender][ticker].add(
+                    filled
+                );
+                balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(
+                    cost
+                );
+                balances[orders[i].trader][ticker] = balances[msg.sender][
+                    ticker
+                ].sub(cost);
+                balances[orders[i].trader]["ETH"] = balances[msg.sender]["ETH"]
+                    .add(filled);
+            } else {
+                balances[msg.sender][ticker] = balances[msg.sender][ticker].sub(
+                    filled
+                );
+                balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].add(
+                    cost
+                );
+                balances[orders[i].trader][ticker] = balances[msg.sender][
+                    ticker
+                ].add(cost);
+                balances[orders[i].trader]["ETH"] = balances[msg.sender]["ETH"]
+                    .sub(filled);
+            }
         }
+
         //Loop trough the order book and remove 100% filled orders
+        while (orders.length > 0 && orders[0].filled == orders[0].amount) {
+            for (uint256 i = 0; i < orders.length - 1; i++) {
+                orders[i] = orders[i + 1];
+            }
+            orders.pop();
+        }
     }
 }

@@ -2,7 +2,7 @@ const Dex = artifacts.require("Dex")
 const Link = artifacts.require("Link")
 const truffleAssert = require('truffle-assertions');
 
-contract("Dex", accounts => {
+contract.skip("Dex", accounts => {
     //When creating a SELL market order, the seller needs to have enough tokens for the trade
     it("Should throw an error when creating a SELL market order with no adequate balance",
         async () => {
